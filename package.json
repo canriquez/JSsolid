@@ -1,0 +1,19 @@
+{
+  "name": "jssolid",
+  "version": "1.0.0",
+  "description": "practice file",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/canriquez/JSsolid.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/canriquez/JSsolid/issues"
+  },
+  "homepage": "https://github.com/canriquez/JSsolid#readme"
+}
