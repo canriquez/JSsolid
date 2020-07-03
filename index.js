@@ -1,6 +1,9 @@
 const circle = (radius) => {
     const proto = {
-        type: 'Circle'
+        type: 'Circle',
+        area() {
+            return Math.PI * Math.pow(shape.radius, 2)
+        }
     };
     return Object.assign(Object.create(proto), { radius })
 }
@@ -8,7 +11,9 @@ const circle = (radius) => {
 const square = (length) => {
     const proto = {
         type: 'Square',
-        //code 
+        area() {
+            return Math.pow(this.length, 2)
+        }
     }
     return Object.assign(Object.create(proto), { length })
 }
@@ -19,13 +24,18 @@ const areaCalculator = (s) => {
             const area = []
 
             for (shape of this.shapes) {
-                if (shape.type === 'Square') {
+                //below code commented after we extend the shapes objects and move the area calculation
+                // to the proto methods.
+                /*                 if (shape.type === 'Square') {
+                
+                                    area.push(Math.pow(shape.length, 2))
+                                } else if (shape.type === 'Circle') {
+                
+                                    area.push(Math.PI * Math.pow(shape.radius, 2))
+                                } */
 
-                    area.push(Math.pow(shape.length, 2))
-                } else if (shape.type === 'Circle') {
-
-                    area.push(Math.PI * Math.pow(shape.radius, 2))
-                }
+                //here below is the new simplified sum code
+                area.push(shape.area());
             }
 
             // I leave the commented code below for explanation purposes on the reduce method
