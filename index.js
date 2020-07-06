@@ -1,3 +1,8 @@
+const manageShapeInterface = (fn) => ({
+    type: 'manageShapeInterface',
+    calculate: () => fn()
+})
+
 const shapeInterface = (state) => ({
     type: 'shapeInterface',
     geom: state.type,
@@ -19,7 +24,10 @@ const cubo = (length) => {
     }
     const basics = shapeInterface(proto)
     const complex = solidShapeInterface(proto)
-    const composite = Object.assign({}, basics, complex)
+    const abstraccion = manageShapeInterface(
+        () => basics.area() + complex.volume()
+    )
+    const composite = Object.assign({}, basics, abstraccion)
     return Object.assign(Object.create(composite), { length })
 }
 
@@ -30,7 +38,8 @@ const circle = (radius) => {
         area: (args) => Math.PI * Math.pow(args.radius, 2)
     }
     const basics = shapeInterface(proto)
-    const composite = Object.assign({}, basics)
+    const abstraccion = manageShapeInterface(() => basics.area())
+    const composite = Object.assign({}, basics, abstraccion)
     return Object.assign(Object.create(composite), { radius })
 }
 
@@ -53,7 +62,7 @@ const areaCalculator = (s) => {
             for (shape of this.shapes) {
                 //using now the shapeInterFace to check all object are with the area method.
 
-                if (Object.getPrototypeOf(shape).type === 'shapeInterface') {
+                if (Object.getPrototypeOf(shape).type === 'manageShapeInterface' || Object.getPrototypeOf(shape).type === 'shapeInterface') {
                     area.push(shape.area());
                 } else {
                     throw new Error(shape.type + ': This is not a shapeInterface oject')
