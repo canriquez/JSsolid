@@ -50,6 +50,15 @@ const areaCalculator = (s) => {
     return Object.assign(Object.create(proto), { shapes: s })
 }
 
+const volumeCalculator = (s) => {
+    const proto = {
+        type: 'volumeCalculator'
+    }
+    const areaCalProto = Object.getPrototypeOf(areaCalculator())
+    const inherit = Object.assign({}, areaCalProto, proto)
+    return Object.assign(Object.create(inherit), { shapes: s })
+}
+
 const sumCalculatorOputter = (areas) => {
     const proto = {
         HTML() {
