@@ -1,21 +1,29 @@
+
+const shapeInterface = (state) => ({
+    type: 'shapeInterface',
+    geom: state.type,
+    area: () => state.area(state)
+})
 const circle = (radius) => {
     const proto = {
+        radius,
         type: 'Circle',
-        area() {
-            return Math.PI * Math.pow(shape.radius, 2)
-        }
-    };
-    return Object.assign(Object.create(proto), { radius })
+        area: (args) => Math.PI * Math.pow(args.radius, 2)
+    }
+    const basics = shapeInterface(proto)
+    const composite = Object.assign({}, basics)
+    return Object.assign(Object.create(composite), { radius })
 }
 
 const square = (length) => {
     const proto = {
+        length,
         type: 'Square',
-        area() {
-            return Math.pow(this.length, 2)
-        }
+        area: (args) => Math.pow(args.length, 2)
     }
-    return Object.assign(Object.create(proto), { length })
+    const basics = shapeInterface(proto)
+    const composite = Object.assign({}, basics)
+    return Object.assign(Object.create(composite), { length })
 }
 
 const areaCalculator = (s) => {
@@ -24,28 +32,19 @@ const areaCalculator = (s) => {
             const area = []
 
             for (shape of this.shapes) {
-                //below code commented after we extend the shapes objects and move the area calculation
-                // to the proto methods.
-                /*                 if (shape.type === 'Square') {
-                
-                                    area.push(Math.pow(shape.length, 2))
-                                } else if (shape.type === 'Circle') {
-                
-                                    area.push(Math.PI * Math.pow(shape.radius, 2))
-                                } */
+                //using now the shapeInterFace to check all object are with the area method.
 
-                //here below is the new simplified sum code
-                area.push(shape.area());
+                if (Object.getPrototypeOf(shape).type === 'shapeInterface') {
+                    area.push(shape.area());
+                } else {
+                    throw new Error(shape.type + ': This is not a shapeInterface oject')
+                }
+
             }
 
-            // I leave the commented code below for explanation purposes on the reduce method
+            // After interface optimizartion
 
-            /* let result = area.reduce((sum, current) => {
-                console.log("loops :", sum, current);
-                return current + sum;
-            }, 0) */
-            let result = area.reduce((sum, current) => current + sum, 0);
-            return result
+            return area.reduce((sum, current) => current + sum, 0);
         }
     }
     return Object.assign(Object.create(proto), { shapes: s })
@@ -74,5 +73,12 @@ const shapes = [
 ];
 
 const areas = areaCalculator(shapes)
-console.log('shapes', areas.sum())
 
+
+const s = square(5)
+console.log('OBJ\n', s)
+console.log('PROTO\n', Object.getPrototypeOf(s))
+s.area(5)
+s
+
+console.log('shapes', areas.sum())
